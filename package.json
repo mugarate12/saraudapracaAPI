@@ -1,0 +1,29 @@
+{
+  "name": "saraudapracaapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "predev": "SET NODE_ENV=development&&knex migrate:rollback --all&&knex migrate:latest",
+    "dev": "SET NODE_ENV=development&&nodemon --ignore __tests__",
+    "pretest": "SET NODE_ENV=test&&knex migrate:rollback --all&&knex migrate:latest",
+    "test": "SET NODE_ENV=test&&jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^12.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.1",
+    "mysql2": "^2.1.0"
+  },
+  "devDependencies": {
+    "jest": "^25.2.3",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
+  }
+}
