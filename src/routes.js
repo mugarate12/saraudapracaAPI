@@ -1,8 +1,10 @@
 const { Router } = require('express')
 const { celebrate, Segments, Joi } = require('celebrate')
+const passport = require('passport')
 
 const UserController = require('./controllers/userController')
 const ParticipantController = require('./controllers/participantsController')
+const authGoogleController = require('./controllers/authgoogleController')
 
 const routes = Router()
 
@@ -15,6 +17,17 @@ routes.post('/users', celebrate({
     name: Joi.string().required()
   })
 }), UserController.create)
+
+// auth google routes
+routes.get('/auth/failed', authGoogleController.authFailed)
+routes.get('/auth/sucess', authGoogleController.authSucess)
+routes.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
+routes.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/auth/failed' }),
+  (req, res) => {
+    res.redirect('/auth/sucess')
+  }
+)
 
 // participants routes
 routes.post('/participants', celebrate({
