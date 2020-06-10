@@ -1,4 +1,4 @@
-const TABLE_NAME = 'users'
+const TABLE_NAME = 'admins'
 
 exports.up = function(knex) {
   return knex.schema.createTable(TABLE_NAME, function (table) {
@@ -8,7 +8,7 @@ exports.up = function(knex) {
     table.string('username').notNullable()
     table.string('name').notNullable()
     table.string('password').notNullable()
-    
+
     table.unique('email')
     table.unique('username')
   })

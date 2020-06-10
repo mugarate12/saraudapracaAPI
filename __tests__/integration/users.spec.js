@@ -31,9 +31,17 @@ describe('tests for a users routes', () => {
       })
       .first()
 
+    const invalidUser = await request(app)
+      .post('/users')
+      .send({
+        ...user1
+      })
+
     expect(userCreated.status).toBe(201)
     expect(userInDatabase.username).toBe(user1.username)
     expect(userInDatabase.email).toBe(user1.email)
+    expect(invalidUser.status).toBe(409)
+    expect(invalidUser.body.message).toBe('username ou email já existem')
   })
 
 })

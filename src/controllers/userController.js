@@ -10,7 +10,7 @@ module.exports = {
     let { email, username, name, password } = req.body
     password = await createHashPassword(password)
 
-    await connection(TABLE_NAME)
+    return await connection(TABLE_NAME)
       .insert({
         email,
         username,

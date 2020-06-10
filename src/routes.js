@@ -35,7 +35,8 @@ routes.post('/participants', celebrate({
     name: Joi.string().required(),
     activity: Joi.string().required(),
     email: Joi.string().required(),
-    num_phone: Joi.string().required()
+    num_phone: Joi.string().required(),
+    instagram: Joi.string().required()
   })
 }), ParticipantController.create)
 

@@ -9,7 +9,8 @@ describe('tests for a participants routes', () => {
     name: "Mateus",
     activity: "Poesia",
     email: "serjumano17@gmail.com",
-    num_phone: "082993912631"
+    num_phone: "082993912631",
+    instagram: "matt_cardosoo"
   }
   let participantCreated
 
@@ -24,6 +25,7 @@ describe('tests for a participants routes', () => {
   })
 
   it('should create a valid participant', async () => {
+    
     const participantInDatabase = await connection(TABLE_NAME)
       .select('*')
       .where({

@@ -4,10 +4,10 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "predev": "SET NODE_ENV=development&&knex migrate:rollback --all&&knex migrate:latest",
-    "dev": "SET NODE_ENV=development&&nodemon --ignore __tests__",
-    "pretest": "SET NODE_ENV=test&&knex migrate:rollback --all&&knex migrate:latest",
-    "test": "SET NODE_ENV=test&&jest"
+    "predev": "SET NODE_ENV=development&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
+    "dev": "SET NODE_ENV=development&&SET JWT_SECRET=secret&&nodemon --ignore __tests__",
+    "pretest": "SET NODE_ENV=test&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
+    "test": "SET NODE_ENV=test&&SET JWT_SECRET=secret&&jest"
   },
   "keywords": [],
   "author": "",

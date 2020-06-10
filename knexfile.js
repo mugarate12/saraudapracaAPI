@@ -1,4 +1,4 @@
-// Update with your config settings.
+const path = require('path')
 
 module.exports = {
 
@@ -10,7 +10,10 @@ module.exports = {
       password: 'majuge123'
     },
     migrations: {
-      directory: './src/database/migrations'
+      directory: path.resolve(__dirname, 'src', 'database', 'migrations')
+    },
+    seeds: {
+      directory: path.resolve(__dirname, 'src', 'database', 'seeds')
     }
   },
   test: {
@@ -21,7 +24,10 @@ module.exports = {
       password: 'majuge123'
     },
     migrations: {
-      directory: './src/database/migrations'
+      directory: path.resolve(__dirname, 'src', 'database', 'migrations')
+    },
+    seeds: {
+      directory: path.resolve(__dirname, 'src', 'database', 'seeds')
     }
   },
 
