@@ -4,7 +4,7 @@ const app = require('./../../src/app')
 
 const TABLE_NAME = 'participants'
 
-describe('tests for a participants routes', () => {
+describe('tests for participants routes', () => {
   const participant1 = {
     name: "Mateus",
     activity: "Poesia",
@@ -12,28 +12,23 @@ describe('tests for a participants routes', () => {
     num_phone: "082993912631",
     instagram: "matt_cardosoo"
   }
-  let participantCreated
 
-  beforeAll(async (done) => {
-    participantCreated = await request(app)
+  it('should create a valid participant', async () => {
+    const createParticipantRequest = await request(app)
       .post('/participants')
       .send({
         ...participant1
       })
-
-    done()
-  })
-
-  it('should create a valid participant', async () => {
     
     const participantInDatabase = await connection(TABLE_NAME)
       .select('*')
       .where({
-        id: participantCreated.body.id
+        id: createParticipantRequest.body.id
       })
       .first()
 
-    expect(participantCreated.status).toBe(201)
+    expect(createParticipantRequest.status).toBe(201)
+    expect(createParticipantRequest.body.id).toBeGreaterThan(0)
     expect(participantInDatabase.email).toBe(participant1.email)
-  })
+  }, 20000)
 })

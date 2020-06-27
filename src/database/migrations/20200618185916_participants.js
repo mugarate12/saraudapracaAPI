@@ -10,7 +10,10 @@ exports.up = function(knex) {
     table.string('num_phone').notNullable()
     table.string('instagram').notNullable()
 
+    table.integer('eventIDFK').unsigned()
+
     table.timestamp('created_at').defaultTo(knex.fn.now())
+    table.foreign('eventIDFK').references('id').inTable('event')
   })
 }
 

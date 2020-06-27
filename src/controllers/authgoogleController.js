@@ -15,7 +15,7 @@ module.exports = {
       profileImage: req.user._json.picture
     }
 
-    await connection(TABLE_NAME)
+    return await connection(TABLE_NAME)
       .insert({
         ...user
       })
