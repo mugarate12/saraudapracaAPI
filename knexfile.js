@@ -1,4 +1,5 @@
 const path = require('path')
+require('dotenv').config()
 
 module.exports = {
 
@@ -6,8 +7,8 @@ module.exports = {
     client: 'mysql2',
     connection: {
       database: 'sarauapidevelopment',
-      user:     'root',
-      password: 'majuge123'
+      user:     process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD
     },
     migrations: {
       directory: path.resolve(__dirname, 'src', 'database', 'migrations')
@@ -20,8 +21,8 @@ module.exports = {
     client: 'mysql2',
     connection: {
       database: 'sarauapitest',
-      user:     'root',
-      password: 'majuge123'
+      user:     process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD
     },
     migrations: {
       directory: path.resolve(__dirname, 'src', 'database', 'migrations')

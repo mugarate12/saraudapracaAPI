@@ -5,9 +5,9 @@
   "main": "src/server.js",
   "scripts": {
     "predev": "SET NODE_ENV=development&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
-    "dev": "SET NODE_ENV=development&&SET JWT_SECRET=secret&&nodemon --ignore __tests__",
+    "dev": "SET NODE_ENV=development&&nodemon --ignore __tests__",
     "pretest": "SET NODE_ENV=test&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
-    "test": "SET NODE_ENV=test&&SET JWT_SECRET=secret&&jest"
+    "test": "SET NODE_ENV=test&&jest"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "cors": "^2.8.5",
     "date-fns": "^2.14.0",
     "date-fns-tz": "^1.0.10",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.1",

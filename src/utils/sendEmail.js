@@ -2,8 +2,8 @@ const nodemailer = require('nodemailer')
 const fs = require('fs')
 
 const adminAccount = {
-  user: 'testfordevelopapp@gmail.com',
-  pass: 'mytestisgood'
+  user: process.env.ORG_EMAIL,
+  pass: process.env.ORG_EMAIL_PASSWORD
 }
 
 async function sendEmail({ email, title, content, pdfName }) {

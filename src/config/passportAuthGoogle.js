@@ -1,8 +1,8 @@
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 
-const GOOGLE_CLIENT_ID = '234803060238-jj679nflpp17ijacjj00p3vnksu8kv51.apps.googleusercontent.com'
-const GOOGLE_CLIENT_SECRET = 'IXxpiwvyHbwFPSEbRThRh-p2'
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 
 passport.serializeUser(function (user, done) {
   done(null, user)

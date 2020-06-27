@@ -6,7 +6,6 @@ function createSchedule(participants) {
   const PDF_NAME = 'Cronograma.pdf'
   pdf.pipe(fs.createWriteStream(`src/utils/${PDF_NAME}`))
 
-
   // estilização do pdf
   pdf.font('Times-Roman')
     .text(`Cronograma ${participants[0].eventName}`, { align: 'center' })
@@ -35,11 +34,6 @@ function createSchedule(participants) {
         .text(` ${participant.hour}`,
         { align: 'center', width: 200})
   })
-
-
-
-  
-  
 
   pdf.end()
 

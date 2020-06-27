@@ -4,7 +4,7 @@ const connection = require('./../database/connection')
 
 const ADMIN_TABLE_NAME = 'admins'
 const USER_TABLE_NAME = 'users'
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET || 'Secret'
 
 async function authUserorAdmin (req, res, next) {
   const authHeader = req.headers.authorization

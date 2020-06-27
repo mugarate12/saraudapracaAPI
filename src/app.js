@@ -4,6 +4,7 @@ const { errors } = require('celebrate')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const cookieSession = require('cookie-session')
+require('dotenv').config()
 require('./config/passportAuthGoogle')
 const routes = require('./routes')
 
