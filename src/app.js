@@ -7,6 +7,8 @@ const cookieSession = require('cookie-session')
 require('dotenv').config()
 require('./config/passportAuthGoogle')
 const routes = require('./routes')
+const swaggerUI = require('swagger-ui-express')
+const swaggerDocument = require('../swagger.json')
 
 const app = express()
 
@@ -19,7 +21,9 @@ app.use(cookieSession({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
+
 app.use(routes)
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 app.use(errors())
 
 module.exports = app

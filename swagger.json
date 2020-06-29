@@ -1,0 +1,964 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API for Sarau da Praça Application",
+    "version": "1.0.0",
+    "title": "Sarau da Praça API",
+    "contact": {
+      "email": "serjumano17@gmail.com"
+    }
+  },
+  "host": "localhost:3000",
+  "schemes": [
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "admin",
+      "description": "Secured Admin-only calls"
+    },
+    {
+      "name": "participants",
+      "description": "Participants request"
+    },
+    {
+      "name": "session",
+      "description": "Session/login requests"
+    },
+    {
+      "name": "event",
+      "description": "Event requests"
+    },
+    {
+      "name": "schedule",
+      "description": "Schedule requests"
+    }
+  ],
+  "paths": {
+    "/admin": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "create new admin",
+        "description": "create new admin but only admin can use this",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "AdminObject",
+            "description": "Admin information",
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "username",
+                "name",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "example@gmail.com"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "my_user_name"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Mateus Cardoso"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "mypassword"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "search results matching criteria",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized for this action"
+          },
+          "409": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/admin/password": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "change admin password",
+        "description": "change password",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "changePasswordObject",
+            "description": "Old and new password",
+            "schema": {
+              "type": "object",
+              "required": [
+                "oldPassword",
+                "newPassword"
+              ],
+              "properties": {
+                "oldPassword": {
+                  "type": "string",
+                  "example": "ismyoldpassword"
+                },
+                "newPassword": {
+                  "type": "string",
+                  "example": "ismynewpassword"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "change password successful"
+          },
+          "401": {
+            "description": "unauthorized for this action"
+          },
+          "409": {
+            "description": "bad input parameters"
+          }
+        }
+      }
+    },
+    "/admin/username": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "change admin username",
+        "description": "change password",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "changeUsernameObject",
+            "description": "new username",
+            "schema": {
+              "type": "object",
+              "required": [
+                "username"
+              ],
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "myusername"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "change username successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unanthorized"
+          },
+          "409": {
+            "description": "bad input request"
+          }
+        }
+      }
+    },
+    "/admin/name": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "change admin name",
+        "description": "change name",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "nameObject",
+            "description": "new name",
+            "schema": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "myname"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfull name update",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "409": {
+            "description": "bad input request"
+          }
+        }
+      }
+    },
+    "/admin/email": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "change admin email",
+        "description": "change email",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "changeEmailObject",
+            "description": "new email",
+            "schema": {
+              "type": "object",
+              "required": [
+                "email"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email@email.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "change username successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unanthorized"
+          },
+          "409": {
+            "description": "bad input request"
+          }
+        }
+      }
+    },
+    "/participants": {
+      "post": {
+        "tags": [
+          "participants"
+        ],
+        "summary": "create a new participant",
+        "description": "create a participant by first valid event",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "new participant object",
+            "description": "participant information",
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "name",
+                "activity",
+                "num_phone",
+                "instagram"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email@email.com"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Mateus Cardoso"
+                },
+                "activity": {
+                  "type": "string",
+                  "example": "Poesia"
+                },
+                "num_phone": {
+                  "type": "string",
+                  "example": 991856472
+                },
+                "instagram": {
+                  "type": "string",
+                  "example": "mynick_name"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "sucessful participant created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "bad input request"
+          }
+        }
+      }
+    },
+    "/auth/admin": {
+      "post": {
+        "tags": [
+          "session"
+        ],
+        "summary": "Login requests",
+        "description": "login requests for a another type of user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "admin fields",
+            "description": "information for admin validator, only email or username can be informed",
+            "schema": {
+              "type": "object",
+              "required": [
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email@email.com"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "myusername"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "mypassword"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfull take token admin",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "aaaa.bbb.ccc"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "bad input request"
+          }
+        }
+      }
+    },
+    "/event": {
+      "post": {
+        "tags": [
+          "event"
+        ],
+        "summary": "register new event",
+        "description": "register new event",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "new event information",
+            "description": "event name and date",
+            "schema": {
+              "type": "object",
+              "required": [
+                "name",
+                "date"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Sarau da praça edição XV"
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2020-08-20T22:00:00.000"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "event has ben created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "409": {
+            "description": "bad input request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "event"
+        ],
+        "summary": "get all events",
+        "description": "get events ordered by date",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessful events array",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Event"
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      }
+    },
+    "/event/valid": {
+      "get": {
+        "tags": [
+          "event"
+        ],
+        "summary": "get event not done",
+        "description": "get all events to date is better to actual date",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessful events array",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Event"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/event/{id}/participants": {
+      "get": {
+        "tags": [
+          "event"
+        ],
+        "summary": "get participants by event",
+        "description": "participants by one event",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id for event",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "participants by event",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "João Silva"
+                  },
+                  "activity": {
+                    "type": "string",
+                    "example": "Cantar"
+                  },
+                  "num_phone": {
+                    "type": "string",
+                    "example": 988996633
+                  },
+                  "instagram": {
+                    "type": "string",
+                    "example": "joao_silva"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "409": {
+            "description": "bad input id request"
+          }
+        }
+      }
+    },
+    "/event/{id}/date": {
+      "put": {
+        "tags": [
+          "event"
+        ],
+        "summary": "change date by event",
+        "description": "change date for a one event",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id for event",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "date for event",
+            "schema": {
+              "type": "object",
+              "required": [
+                "date"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "example": " 2020-08-20T22:00:00.000"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessful change name",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "409": {
+            "description": "bad input id request"
+          }
+        }
+      }
+    },
+    "/event/{id}/name": {
+      "put": {
+        "tags": [
+          "event"
+        ],
+        "summary": "change name by event",
+        "description": "change name for a one event",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id for event",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "name for event",
+            "schema": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Sarau da Praça edição XVI"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessful change name",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "409": {
+            "description": "bad input id request"
+          }
+        }
+      }
+    },
+    "/schedule": {
+      "post": {
+        "tags": [
+          "schedule"
+        ],
+        "summary": "create a new schedule for a event",
+        "description": "create a new schedule",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "schedule information",
+            "description": "participants information for create schedule",
+            "schema": {
+              "type": "object",
+              "required": [
+                "participants"
+              ],
+              "properties": {
+                "participants": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "participantIDFK": {
+                        "type": "integer",
+                        "example": 2
+                      },
+                      "eventIDFK": {
+                        "type": "integer",
+                        "example": 3
+                      },
+                      "hour": {
+                        "type": "string",
+                        "example": "19:00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "schedule has ben created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "409": {
+            "description": "bad input request"
+          }
+        }
+      }
+    },
+    "/events/{id}/schedule": {
+      "get": {
+        "tags": [
+          "schedule"
+        ],
+        "summary": "get schedule for a event",
+        "description": "get a list for participants by event with name and hour to apresentation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id for event",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "event participants",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "João Silva"
+                  },
+                  "hour": {
+                    "type": "string",
+                    "example": "20:00"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "409": {
+            "description": "bad input id request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "schedule"
+        ],
+        "summary": "change participants for schedule event",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id for event",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "participants information",
+            "description": "array an participants information included changes",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "José Carvalho"
+                  },
+                  "hour": {
+                    "type": "string",
+                    "example": "20:00"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessful change schedule",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "409": {
+            "description": "bad input request"
+          }
+        }
+      }
+    },
+    "/events/{id}/schedule/send": {
+      "get": {
+        "tags": [
+          "schedule"
+        ],
+        "summary": "send schedule to participants event",
+        "description": "if schedule has ben created send PDF to participants and admins email",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id for event",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessful send PDF schedule to participants",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sucess": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "409": {
+            "description": "bad input id request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Event": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Sarau da Praça XX"
+        },
+        "date": {
+          "type": "string",
+          "example": "2020-08-20T22:00:00.000"
+        }
+      }
+    }
+  }
+}
