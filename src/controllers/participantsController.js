@@ -12,7 +12,7 @@ module.exports = {
     const { name, activity, email, num_phone, instagram } = req.body
     
     const date = new Date()
-    const formatedDate = `${date.getFullYear()}-0${date.getMonth() + 1}-${date.getDate()} 00:00:00`
+    const formatedDate = `${date.getFullYear()}-0${date.getMonth() + 1}-${date.getDate().toString().length == 1 ? `0${date.getDate()}` : date.getDate()} 00:00:00`
     const parsedDate = parseISO(formatedDate)
     const znDate = zonedTimeToUtc(parsedDate, 'America/Sao_Paulo')
     
