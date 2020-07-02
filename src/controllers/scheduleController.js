@@ -1,5 +1,6 @@
 const connection = require('./../database/connection')
 const { handleError } = require('./../utils/errors')
+const { validateHour } = require('./../utils/validators')
 const sendEmail = require('./../utils/sendEmail')
 const { createSchedule } = require('./../utils/createPDF')
 
@@ -11,6 +12,10 @@ module.exports = {
     const { participants } = req.body
 
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
+    participants.forEach(participant => {
+      const validHour = validateHour(participant.hour)
+      if (!validHour) return res.status(409).json({ error: 'Erro na incrição do participante', error: validHour.error })
+    })
 
     return await connection(TABLE_NAME)
       .insert(participants)
@@ -86,7 +91,11 @@ module.exports = {
     let { participants } = req.body
 
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
-    
+    participants.forEach(participant => {
+      const validHour = validateHour(participant.hour)
+      if (!validHour) return res.status(409).json({ error: 'Erro na incrição do participante', error: validHour.error })
+    })
+
     // caso ele consiga excluir os registros mas não registrar, vou colocar a informação novamente no banco
     const participantsInDatabase = await connection(TABLE_NAME)
       .select('hour', 'eventIDFK', 'participantIDFK')

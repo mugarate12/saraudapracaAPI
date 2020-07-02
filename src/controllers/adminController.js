@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const connection = require('./../database/connection')
 const { createHashPassword } = require('./../utils/hashPassword')
 const { handleError } = require('./../utils/errors')
+const { validateUsername, validatePassword } = require('./../utils/validators')
 
 const ADMIN_TABLE_NAME = 'admins'
 
@@ -13,6 +14,14 @@ module.exports = {
     const key = crypto.randomBytes(10).toString('hex')
 
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
+    
+    let validUsername = validateUsername(username)
+    if (!validUsername.valid) return res.status(409).json({ error: 'Username inválido', message: validUsername.error })
+
+    let validPassword = validatePassword(password)
+    if (!validPassword.valid) return res.status(409).json({ error: 'Username inválido', message: validPassword.error })
+
+    password = await createHashPassword(password)
 
     return await connection(ADMIN_TABLE_NAME)
       .insert({

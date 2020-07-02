@@ -5,6 +5,7 @@
 - [Documentation](#documentation)
 - [Tests](#tests)
 - [Run server](#run-server)
+- [Documentation](#documentation)
 
 ## Overview
 

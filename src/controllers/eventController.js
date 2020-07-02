@@ -1,5 +1,6 @@
 const connection = require('./../database/connection')
 const { handleError } = require('./../utils/errors')
+const { validateEventDate } = require('./../utils/validators')
 
 const TABLE_NAME = 'event'
 const PARTICIPANTS_TABLE_NAME = 'participants'
@@ -10,6 +11,8 @@ module.exports = {
     const { name, date } = req.body
 
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
+    const validDate = validateEventDate(date)
+    if (!validDate.valid) return res.status(409).json({ error: 'Data inválida', message: validDate.error })
 
     return await connection(TABLE_NAME)
       .insert({
@@ -73,7 +76,9 @@ module.exports = {
     const { date } = req.body
 
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
-
+    const validDate = validateEventDate(date)
+    if (!validDate.valid) return res.status(409).json({ error: 'Data inválida', message: validDate.error })
+    
     return await connection(TABLE_NAME)
       .where({
         id: Number(id)
