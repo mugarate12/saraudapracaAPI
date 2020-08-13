@@ -88,7 +88,7 @@ describe('tests for event routes', () => {
 
   it('should get event not done', async () => {
     const haveValidEvent = await request(app)
-      .get('/event/valid')
+      .get('/event/valid?page=1')
 
     // esse evento não entra pois a data já ta defasada, ou seja, é um evento que já foi realizado
     const date = '2020-06-17 19:00:00'
@@ -110,7 +110,7 @@ describe('tests for event routes', () => {
 
   it('should get events', async () => {
     const getEventsRequest = await request(app)
-      .get('/event')
+      .get('/event?page=1')
       .set('Authorization', `bearer ${token}`)
 
     expect(getEventsRequest.status).toBe(200)
@@ -120,7 +120,7 @@ describe('tests for event routes', () => {
 
   it('should get participants by event', async () => {
     const getParticipantsRequest = await request(app)
-      .get(`/event/${events[0].id}/participats/`)
+      .get(`/event/${events[0].id}/participats?page=1`)
       .set('Authorization', `bearer ${token}`)
 
     expect(getParticipantsRequest.status).toBe(200)

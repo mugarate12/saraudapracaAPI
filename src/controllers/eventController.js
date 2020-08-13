@@ -23,10 +23,17 @@ module.exports = {
       .catch(error => handleError(error, res, 'não foi possivel cadastrar evento'))
   },
   async indexEvent (req, res) {
+    const { page } = req.query
+
     const date = new Date()
+    const limit = 5
+    // faz com o offset inicial seja 0, e vá progredindo de 5 em 5
+    const offset = (page * limit) - limit
 
     return await connection(TABLE_NAME)
       .select('name', 'date')
+      .limit(limit)
+      .offset(offset)
       .then(events => {
         let validEvents = []
         events.forEach(eventObject => {
@@ -47,26 +54,40 @@ module.exports = {
       .catch(error => handleError(error, res, 'Erro inexperado'))
   },
   async index (req, res) {
+    const { page } = req.query
     const { adminId } = req
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
 
+    const limit = 5
+    // faz com o offset inicial seja 0, e vá progredindo de 5 em 5
+    const offset = (page * limit) - limit
+
     return await connection(TABLE_NAME)
       .select('*')
+      .limit(limit)
+      .offset(offset)
       .orderBy('date')
       .then(events => res.status(200).json({ events }))
       .catch(error => handleError(error, res, 'Ocorreu um erro, por favor, tente novamente'))
   },
   async indexParticipants (req, res) {
+    const { page } = req.query
     const { adminId } = req
     let { id } = req.params
 
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
+
+    const limit = 5
+    // faz com o offset inicial seja 0, e vá progredindo de 5 em 5
+    const offset = (page * limit) - limit
 
     return await connection(PARTICIPANTS_TABLE_NAME)
       .select('id', 'name', 'email', 'activity', 'num_phone', 'instagram')
       .where({
         eventIDFK: Number(id)
       })
+      .limit(limit)
+      .offset(offset)
       .then(participants => res.status(200).json({ participants }))
       .catch(error => handleError(error, res, 'Ocorreu um erro, verifique os dados e tente novamente'))
   },

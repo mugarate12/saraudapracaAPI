@@ -31,7 +31,7 @@ describe('tests for schedule routes', () => {
 
   it('should create a valid schedule', async () => {
     const getEventsRequest = await request(app)
-      .get('/event')
+      .get('/event?page=1')
       .set('Authorization', `bearer ${token}`)
 
     const createParticipantRequest = await request(app)
@@ -45,7 +45,7 @@ describe('tests for schedule routes', () => {
       })
 
     const getParticipantsRequest = await request(app)
-      .get(`/event/${getEventsRequest.body.events[0].id}/participats/`)
+      .get(`/event/${getEventsRequest.body.events[0].id}/participats?page=1`)
       .set('Authorization', `bearer ${token}`)
 
 
