@@ -60,9 +60,13 @@ describe('tests for event routes', () => {
   })
 
   it('should create a valid event', async () => {
-    const date = '2020-08-20 19:00:00'
-    const parsedDate = parseISO(date)
-    const znDate = zonedTimeToUtc(parsedDate, 'America/Sao_Paulo')
+    // const date = '2020-08-20 19:00:00'
+    // const parsedDate = parseISO(date)
+    const date = new Date()
+    const day = date.getDate() + 1 > 29 ? 1 : date.getDate() + 1
+    date.setDate(day)
+    date.setHours(19, 0, 0)
+    const znDate = zonedTimeToUtc(date, 'America/Sao_Paulo')
 
     const newEvent = {
       name: "Sarau da praça edição X",
@@ -128,9 +132,11 @@ describe('tests for event routes', () => {
   })
 
   it('should update event Date', async () => {
-    const date = '2020-06-20 19:00:00'
-    const parsedDate = parseISO(date)
-    const znDate = zonedTimeToUtc(parsedDate, 'America/Sao_Paulo')
+    const date = new Date()
+    const day = date.getDate() + 1 > 29 ? 1 : date.getDate() + 1
+    date.setDate(day)
+    date.setHours(19, 0, 0)
+    const znDate = zonedTimeToUtc(date, 'America/Sao_Paulo')
 
     const updateDateRequest = await request(app)
       .put(`/event/${events[2].id}/date`)

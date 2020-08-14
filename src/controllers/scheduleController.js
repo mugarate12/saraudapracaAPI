@@ -1,8 +1,9 @@
 const connection = require('./../database/connection')
 const { handleError } = require('./../utils/errors')
-const { validateHour } = require('./../utils/validators')
+const { validateHour, validateEventScheduleDate } = require('./../utils/validators')
 const sendEmail = require('./../utils/sendEmail')
 const { createSchedule } = require('./../utils/createPDF')
+const { parseISO } = require('date-fns')
 
 const TABLE_NAME = 'schedule'
 
@@ -11,10 +12,35 @@ module.exports = {
     const { adminId } = req
     const { participants } = req.body
 
+    const eventDatabase = await connection('event')
+    .select('date')
+    .where({ id: participants[0].eventIDFK })
+    .first()
+    
+    const actualDate = new Date()
+    const eventDate = parseISO(eventDatabase.date)
+    const isValidDate = validateEventScheduleDate(actualDate, eventDate)
+    if (!isValidDate.valid) {
+      res.status(409).json({ error: isValidDate.error })
+    }
+
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
-    participants.forEach(participant => {
+    
+    const DatabaseParticipants = await connection(TABLE_NAME)
+      .join('participants', `${TABLE_NAME}.participantIDFK`, '=', 'participants.id')
+      .select('participants.id', `${TABLE_NAME}.hour`, 'participants.name')
+      .where(`${TABLE_NAME}.eventIDFK`, Number(participants[0].eventIDFK))
+      .orderBy('participants.id')
+
+    participants.map(participant => {
       const validHour = validateHour(participant.hour)
       if (!validHour) return res.status(409).json({ error: 'Erro na incrição do participante', error: validHour.error })
+
+      DatabaseParticipants.map(DbParticipant => {
+        if (participant.hour === DbParticipant.hour) {
+          return res.status(409).json({ error: `não pode haver duas pessoas no mesmo horario` })
+        }
+      })
     })
 
     return await connection(TABLE_NAME)
@@ -32,6 +58,7 @@ module.exports = {
       .join('participants', `${TABLE_NAME}.participantIDFK`, '=', 'participants.id')
       .select('participants.id', `${TABLE_NAME}.hour`, 'participants.name')
       .where(`${TABLE_NAME}.eventIDFK`, Number(id))
+      .orderBy('participants.id')
       .then(participants => res.status(200).json({ 
         schedule: { participants }
       }))

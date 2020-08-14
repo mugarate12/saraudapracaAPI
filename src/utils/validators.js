@@ -1,4 +1,4 @@
-const { parseISO } = require('date-fns')
+const { parseISO, compareAsc } = require('date-fns')
 const { format } = require('date-fns-tz')
 
 function validateUsername(username) {
@@ -65,9 +65,23 @@ function validatePassword(password) {
   return { valid: true }
 }
 
+function validateEventScheduleDate(actualDate, eventDate) {
+  // Se for 1, actualDate > eventDate
+  // Se for -1, actualDate < eventDate
+  const result = compareAsc(actualDate, eventDate)
+
+  if (result === 1) {
+    return { valid: false, error: 'Evento já foi encerrado, você só pode criar cronogramas pra eventos não concluidos' }
+
+  } else {
+    return { valid: true }
+  }
+}
+
 module.exports = {
   validateUsername,
   validateEventDate,
   validateHour,
-  validatePassword
+  validatePassword,
+  validateEventScheduleDate
 }

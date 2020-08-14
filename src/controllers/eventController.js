@@ -88,6 +88,7 @@ module.exports = {
       })
       .limit(limit)
       .offset(offset)
+      .orderBy('id')
       .then(participants => res.status(200).json({ participants }))
       .catch(error => handleError(error, res, 'Ocorreu um erro, verifique os dados e tente novamente'))
   },
