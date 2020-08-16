@@ -56,7 +56,7 @@ module.exports = {
 
     return await connection(TABLE_NAME)
       .join('participants', `${TABLE_NAME}.participantIDFK`, '=', 'participants.id')
-      .select('participants.id', `${TABLE_NAME}.hour`, 'participants.name')
+      .select('participants.id', `${TABLE_NAME}.hour`, 'participants.name', 'participants.activity')
       .where(`${TABLE_NAME}.eventIDFK`, Number(id))
       .orderBy('participants.id')
       .then(participants => res.status(200).json({ 
@@ -116,6 +116,18 @@ module.exports = {
     const { adminId } = req
     let { id } = req.params
     let { participants } = req.body
+
+    const eventDatabase = await connection('event')
+    .select('date')
+    .where({ id: Number(id) })
+    .first()
+
+    const actualDate = new Date()
+    const eventDate = parseISO(eventDatabase.date)
+    const isValidDate = validateEventScheduleDate(actualDate, eventDate)
+    if (!isValidDate.valid) {
+      res.status(409).json({ error: isValidDate.error })
+    }
 
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
     participants.forEach(participant => {

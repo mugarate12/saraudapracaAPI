@@ -94,6 +94,7 @@ describe('tests for schedule routes', () => {
       expect(participant.name).toBeDefined()
       expect(participant.hour).toBeDefined()      
     })
+
     participants = getScheduleRequest.body.schedule.participants
   })
 
@@ -103,6 +104,8 @@ describe('tests for schedule routes', () => {
 
     let participantHour = initialHour
     participants.forEach((participant, index) => {
+      delete participant.activity
+
       if (index % 2 == 0) {
         participant.hour = participantHour
         updatedParticipants.push(participant.id)
@@ -122,6 +125,7 @@ describe('tests for schedule routes', () => {
       })
       .set('Authorization', `bearer ${token}`)
 
+    // console.log(updateScheduleRequest.error.message)
     expect(updateScheduleRequest.status).toBe(200)
     expect(updateScheduleRequest.body.sucess).toBe(true)
   }, 25000)
