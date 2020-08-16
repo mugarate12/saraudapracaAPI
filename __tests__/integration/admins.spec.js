@@ -51,6 +51,15 @@ describe('testes for a admin routes', () => {
     expect(invalidTokenRequest.body.error).toBe('token inválido')
   })
 
+  it('should get admin information', async () => {
+    const getAdminRequest = await request(app)
+      .get('/admin')
+      .set('Authorization', `bearer ${token}`)
+
+    expect(getAdminRequest.status).toBe(200)
+    expect(getAdminRequest.body.admin).toBeDefined()
+  })
+
   it('should admin change password', async () => {
     const changePasswordRequest = await request(app)
       .put('/admin/password')

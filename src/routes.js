@@ -19,6 +19,7 @@ routes.post('/admin', celebrate({
     password: Joi.string().required()
   })
 }), authJWT, adminsController.create)
+routes.get('/admin', authJWT, adminsController.index)
 
 routes.put('/admin/password', celebrate({
   [Segments.BODY]: Joi.object().keys({

@@ -113,5 +113,17 @@ module.exports = {
       })
       .then(adminId => res.status(200).json({ sucess: true }))
       .catch(error => handleError(error, res, 'Credenciais invalidas'))
+  },
+  async index (req, res) {
+    const { adminId, adminUsername } = req
+
+    return await connection(ADMIN_TABLE_NAME)
+      .select('email', 'username', 'name')
+      .where({
+        id: adminId,
+        username: adminUsername
+      })
+      .then(adminInformation => res.status(200).json({ admin: adminInformation }))
+      .catch(error => handleError(error, res, 'Credenciais invalidas'))
   }
 }

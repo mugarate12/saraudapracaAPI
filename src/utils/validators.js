@@ -78,10 +78,24 @@ function validateEventScheduleDate(actualDate, eventDate) {
   }
 }
 
+function validateEventUpdateDate(actualDate, eventDate) {
+  // Se for 1, actualDate > eventDate
+  // Se for -1, actualDate < eventDate
+  const result = compareAsc(actualDate, eventDate)
+
+  if (result === 1) {
+    return { valid: false, error: 'Evento já foi encerrado, você só pode criar cronogramas pra eventos não concluidos' }
+
+  } else {
+    return { valid: true }
+  }
+}
+
 module.exports = {
   validateUsername,
   validateEventDate,
   validateHour,
   validatePassword,
-  validateEventScheduleDate
+  validateEventScheduleDate,
+  validateEventUpdateDate
 }

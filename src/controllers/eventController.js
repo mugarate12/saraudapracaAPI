@@ -1,6 +1,7 @@
+const { parseISO } = require('date-fns')
 const connection = require('./../database/connection')
 const { handleError } = require('./../utils/errors')
-const { validateEventDate } = require('./../utils/validators')
+const { validateEventDate, validateEventUpdateDate } = require('./../utils/validators')
 
 const TABLE_NAME = 'event'
 const PARTICIPANTS_TABLE_NAME = 'participants'
@@ -101,6 +102,18 @@ module.exports = {
     const validDate = validateEventDate(date)
     if (!validDate.valid) return res.status(409).json({ error: 'Data inválida', message: validDate.error })
     
+    const eventDatabase = await connection(TABLE_NAME)
+      .select('date')
+      .where({ id: Number(id) })
+      .first()
+
+    const actualDate = new Date()
+    const eventDate = parseISO(eventDatabase.date)
+    const isValidDate = validateEventUpdateDate(actualDate, eventDate)
+    if (!isValidDate.valid) {
+      res.status(409).json({ error: isValidDate.error })
+    }
+
     return await connection(TABLE_NAME)
       .where({
         id: Number(id)
@@ -117,6 +130,18 @@ module.exports = {
     const { name } = req.body
 
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
+
+    const eventDatabase = await connection(TABLE_NAME)
+      .select('date')
+      .where({ id: Number(id) })
+      .first()
+
+    const actualDate = new Date()
+    const eventDate = parseISO(eventDatabase.date)
+    const isValidDate = validateEventUpdateDate(actualDate, eventDate)
+    if (!isValidDate.valid) {
+      res.status(409).json({ error: isValidDate.error })
+    }
 
     return await connection(TABLE_NAME)
       .where({
