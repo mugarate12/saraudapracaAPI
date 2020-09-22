@@ -64,13 +64,12 @@ describe('tests for event routes', () => {
     // const parsedDate = parseISO(date)
     const date = new Date()
     const day = date.getDate() + 1 > 29 ? 1 : date.getDate() + 1
-    date.setDate(day)
-    date.setHours(19, 0, 0)
-    const znDate = zonedTimeToUtc(date, 'America/Sao_Paulo')
+    const month = date.getMonth() + 2
+    const customDate = `2020-${month}-${day} 19:00`
 
     const newEvent = {
       name: "Sarau da praça edição X",
-      date: znDate
+      date: customDate
     }
 
     const newEventRequest = await request(app)
@@ -134,14 +133,14 @@ describe('tests for event routes', () => {
   it('should update event Date', async () => {
     const date = new Date()
     const day = date.getDate() + 1 > 29 ? 1 : date.getDate() + 1
-    date.setDate(day)
-    date.setHours(19, 0, 0)
-    const znDate = zonedTimeToUtc(date, 'America/Sao_Paulo')
+    const month = date.getMonth() + 2
+    const customDate = `2020-${month}-${day} 19:00`
+    // const znDate = zonedTimeToUtc(date, 'America/Sao_Paulo')
 
     const updateDateRequest = await request(app)
       .put(`/event/${events[2].id}/date`)
       .send({
-        date: znDate
+        date: customDate
       })
       .set('Authorization', `bearer ${token}`)
     

@@ -118,12 +118,15 @@ module.exports = {
       res.status(409).json({ error: isValidDate.error })
     }
 
+    let date2 = parseISO(date)
+    date2 = zonedTimeToUtc(date2, 'America/Sao_Paulo')
+
     return await connection(TABLE_NAME)
       .where({
         id: Number(id)
       })
       .update({
-        date
+        date: date2
       })
       .then(eventId => res.status(200).json({ sucess: true }))
       .catch(error => handleError(error, res, 'Ocorreu um erro, verifique as informações'))

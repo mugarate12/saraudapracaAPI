@@ -4,6 +4,7 @@ const connection = require('./../database/connection')
 const { createHashPassword } = require('./../utils/hashPassword')
 const { handleError } = require('./../utils/errors')
 const { validateUsername, validatePassword } = require('./../utils/validators')
+const { v4: uuidv4 } = require('uuid')
 
 const ADMIN_TABLE_NAME = 'admins'
 
@@ -11,7 +12,7 @@ module.exports = {
   async create (req, res) {
     const { adminId } = req
     let { email, username, name, password } = req.body
-    const key = crypto.randomBytes(10).toString('hex')
+    const key = uuidv4()
 
     if (!adminId) return res.status(401).json({ error: 'Operação não é permitida pra sua autorização' })
     
