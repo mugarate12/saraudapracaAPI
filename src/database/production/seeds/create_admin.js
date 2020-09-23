@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { createHashPassword } = require('./../../utils/hashPassword')
+const { createHashPassword } = require('./../../../utils/hashPassword')
 const { v4: uuidv4 } = require('uuid')
 
 const ADMIN_TABLE_NAME =  'admins'
