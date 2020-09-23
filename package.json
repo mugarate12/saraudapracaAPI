@@ -1,11 +1,14 @@
 {
   "name": "saraudapracaapi",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.x"
+  },
   "description": "",
   "main": "src/server.js",
   "scripts": {
     "build": "NODE_ENV=production&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
-    "production": "npm run build &&npm run clusters",
+    "production": "npm run build &&node ./src/cluster.js",
     "predev": "SET NODE_ENV=development&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
     "dev": "SET NODE_ENV=development&&nodemon --ignore __tests__",
     "pretest": "SET NODE_ENV=test&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
@@ -31,7 +34,8 @@
     "mysql2": "^2.1.0",
     "nodemailer": "^6.4.8",
     "pdfkit": "^0.11.0",
-    "swagger-ui-express": "^4.1.4"
+    "swagger-ui-express": "^4.1.4",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "jest": "^26.0.1",

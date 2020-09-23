@@ -1,11 +1,11 @@
 require('dotenv').config()
-const crypto = require('crypto')
 const { createHashPassword } = require('./../../utils/hashPassword')
+const { v4: uuidv4 } = require('uuid')
 
 const ADMIN_TABLE_NAME =  'admins'
 
 exports.seed = async function(knex) {
-  const key1 = crypto.randomBytes(10).toString('hex')
+  const key1 = uuidv4()
   const password = process.env.PASSWORD
   const hashpassword = await createHashPassword(password)
 

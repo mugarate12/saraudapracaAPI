@@ -1,5 +1,6 @@
 const { parseISO } = require('date-fns')
 const connection = require('./../database/connection')
+const { zonedTimeToUtc } = require('date-fns-tz')
 const { handleError } = require('./../utils/errors')
 const { validateEventDate, validateEventUpdateDate } = require('./../utils/validators')
 
@@ -15,10 +16,13 @@ module.exports = {
     const validDate = validateEventDate(date)
     if (!validDate.valid) return res.status(409).json({ error: 'Data inválida', message: validDate.error })
 
+    date2 = parseISO(date)
+    date2 = zonedTimeToUtc(date2, 'America/Sao_Paulo')
+
     return await connection(TABLE_NAME)
       .insert({
         name,
-        date
+        date: date2
       })
       .then(eventId => res.status(201).json({ sucess: true }))
       .catch(error => handleError(error, res, 'não foi possivel cadastrar evento'))
@@ -114,12 +118,15 @@ module.exports = {
       res.status(409).json({ error: isValidDate.error })
     }
 
+    let date2 = parseISO(date)
+    date2 = zonedTimeToUtc(date2, 'America/Sao_Paulo')
+
     return await connection(TABLE_NAME)
       .where({
         id: Number(id)
       })
       .update({
-        date
+        date: date2
       })
       .then(eventId => res.status(200).json({ sucess: true }))
       .catch(error => handleError(error, res, 'Ocorreu um erro, verifique as informações'))
