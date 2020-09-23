@@ -7,7 +7,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "build": "SET NODE_ENV=production&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
+    "build": "NODE_ENV=production&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
     "production": "npm run build &&node ./src/cluster.js",
     "predev": "SET NODE_ENV=development&&knex migrate:rollback --all&&knex migrate:latest&&knex seed:run",
     "dev": "SET NODE_ENV=development&&nodemon --ignore __tests__",
